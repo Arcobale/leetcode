@@ -1,26 +1,26 @@
 /*
- * @lc app=leetcode.cn id=69 lang=java
+ * @lc app=leetcode.cn id=367 lang=java
  *
- * [69] x 的平方根 
+ * [367] 有效的完全平方数
  */
 
 // @lc code=start
 class Solution {
-    public int mySqrt(int x) {
-        int left = 0;
-        int right = x;
+    public boolean isPerfectSquare(int num) {
+        int left = 1;
+        int right = num;
         while (left <= right) {
             int mid = (left + right) / 2;
             long temp = (long) mid * mid;
-            if (temp > x) {
+            if (temp > num) {
                 right = mid - 1;
-            } else if (temp < x) {
+            } else if (temp < num) {
                 left = mid + 1;
             } else {
-                return mid;
+                return true;
             }
         }
-        return (long) left * left > x ? left - 1 : left;
+        return false;
     }
 }
 // @lc code=end
