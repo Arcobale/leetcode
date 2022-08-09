@@ -14,7 +14,6 @@ class Solution {
         int n = matrix[0].length;
         int start = 0; // 每次循环起点（start, start）
         int loop = 0; // 循环次数
-        int count = 1; // 填充数字
         int i, j;
 
         while (loop++ < Math.min(m / 2, n / 2)) { // 判断边界后，loop从1开始
