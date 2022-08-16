@@ -1,4 +1,7 @@
 import java.util.List;
+import java.util.Stack;
+
+import javax.swing.tree.TreeNode;
 
 /*
  * @lc app=leetcode.cn id=94 lang=java
@@ -25,17 +28,24 @@ import java.util.List;
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
-        inorder(root, result);
-        return result;
-    }
-
-    private void inorder(TreeNode root, List<Integer> result) {
         if (root == null) {
-            return;
+            return result;
         }
-        inorder(root.left, result);
-        result.add(root.val);
-        inorder(root.right, result);
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        // 中序遍历顺序: 左-中-右 入栈顺序： 左-右
+        while (cur != null || !stack.isEmpty()) {
+            if (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+                result.add(cur.val);
+                cur = cur.right;
+            }
+        }
+
+        return result;
     }
 }
 // @lc code=end
