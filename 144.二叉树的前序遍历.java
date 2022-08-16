@@ -35,16 +35,24 @@ class Solution {
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
         while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            // 前序遍历顺序：中-左-右，入栈顺序：中-右-左
-            result.add(node.val);
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-            if (node.left != null) {
-                stack.push(node.left);
+            TreeNode node = stack.peek();
+            if (node != null) {
+                stack.pop(); // 将该节点弹出，避免重复操作，下面再将右左中节点添加到栈中
+                if (node.right != null) {
+                    stack.push(node.right); // 添加右节点（空节点不入栈）
+                }
+                if (node.left != null) {
+                    stack.push(node.left); // 添加左节点（空节点不入栈）
+                }
+                stack.push(node); // 添加中节点
+                stack.push(null); // 中节点访问过，但是还没有处理，加入空节点做为标记。
+            } else { // 只有遇到空节点的时候，才将下一个节点放进结果集
+                stack.pop(); // 将空节点弹出
+                node = stack.pop(); // 重新取出栈中元素
+                result.add(node.val); // 加入到结果集
             }
         }
+
         return result;
     }
 }

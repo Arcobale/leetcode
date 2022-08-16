@@ -32,16 +32,23 @@ class Solution {
             return result;
         }
         Stack<TreeNode> stack = new Stack<>();
-        TreeNode cur = root;
-        // 中序遍历顺序: 左-中-右 入栈顺序： 左-右
-        while (cur != null || !stack.isEmpty()) {
-            if (cur != null) {
-                stack.push(cur);
-                cur = cur.left;
-            } else {
-                cur = stack.pop();
-                result.add(cur.val);
-                cur = cur.right;
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.peek();
+            if (node != null) {
+                stack.pop(); // 将该节点弹出，避免重复操作，下面再将右中左节点添加到栈中
+                if (node.right != null) {
+                    stack.push(node.right); // 添加右节点（空节点不入栈）
+                }
+                stack.push(node); // 添加中节点
+                stack.push(null); // 中节点访问过，但是还没有处理，加入空节点做为标记。
+                if (node.left != null) {
+                    stack.push(node.left); // 添加左节点（空节点不入栈）
+                }
+            } else { // 只有遇到空节点的时候，才将下一个节点放进结果集
+                stack.pop(); // 将空节点弹出
+                node = stack.pop(); // 重新取出栈中元素
+                result.add(node.val); // 加入到结果集
             }
         }
 
