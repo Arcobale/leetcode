@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.swing.tree.TreeNode;
 
 /*
@@ -27,25 +30,45 @@ class Solution {
         if (root == null) {
             return true;
         }
-        return compare(root.left, root.right);
-    }
+        // return compare(root.left, root.right);
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root.left);
+        que.offer(root.right);
 
-    private boolean compare(TreeNode left, TreeNode right) {
-        if (left == null && right == null) {
-            return true;
-        } else if (left != null && right == null) {
-            return false;
-        } else if (left == null && right != null) {
-            return false;
-        } else if (left.val != right.val) {
-            return false;
+        while (!que.isEmpty()) {
+            TreeNode left = que.poll();
+            TreeNode right = que.poll();
+            if (left == null && right == null) {
+                continue;
+            } else if (left == null || right == null || left.val != right.val) {
+                return false;
+            }
+
+            que.offer(left.left);
+            que.offer(right.right);
+            que.offer(left.right);
+            que.offer(right.left);
         }
-
-        // 此时就是：左右节点都不为空，且数值相同的情况
-        // 此时才做递归，做下一层的判断
-        boolean outside = compare(left.left, right.right); // 左子树：左、 右子树：右
-        boolean inside = compare(left.right, right.left); // 左子树：右、 右子树：左
-        return outside && inside; // 左子树：中、 右子树：中 （逻辑处理）
+        return true;
     }
+    /*
+     * private boolean compare(TreeNode left, TreeNode right) {
+     * if (left == null && right == null) {
+     * return true;
+     * } else if (left != null && right == null) {
+     * return false;
+     * } else if (left == null && right != null) {
+     * return false;
+     * } else if (left.val != right.val) {
+     * return false;
+     * }
+     * 
+     * // 此时就是：左右节点都不为空，且数值相同的情况
+     * // 此时才做递归，做下一层的判断
+     * boolean outside = compare(left.left, right.right); // 左子树：左、 右子树：右
+     * boolean inside = compare(left.right, right.left); // 左子树：右、 右子树：左
+     * return outside && inside; // 左子树：中、 右子树：中 （逻辑处理）
+     * }
+     */
 }
 // @lc code=end
