@@ -1,3 +1,5 @@
+import java.util.Queue;
+
 import javax.swing.tree.TreeNode;
 
 /*
@@ -27,12 +29,26 @@ class Solution {
         if (root == null) {
             return root;
         }
-        // 前后序遍历都可以
-        TreeNode temp = root.left;
-        root.left = root.right;
-        root.right = temp;
-        invertTree(root.left);
-        invertTree(root.right);
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            int len = que.size();
+
+            while (len-- > 0) {
+                TreeNode node = que.poll();
+                TreeNode temp = node.left;
+                node.left = node.right;
+                node.right = temp;
+
+                if (node.left != null) {
+                    que.offer(node.left);
+                }
+                if (node.right != null) {
+                    que.offer(node.right);
+                }
+            }
+        }
+
         return root;
     }
 }
