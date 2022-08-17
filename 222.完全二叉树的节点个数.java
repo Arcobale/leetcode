@@ -1,3 +1,8 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=222 lang=java
  *
@@ -25,9 +30,23 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int leftSum = countNodes(root.left); // 左
-        int rightSum = countNodes(root.right); // 右
-        return leftSum + rightSum + 1; // 中
+        int result = 0;
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            int len = que.size();
+            result += len;
+            while (len-- > 0) {
+                TreeNode temp = que.poll();
+                if (temp.left != null) {
+                    que.offer(temp.left);
+                }
+                if (temp.right != null) {
+                    que.offer(temp.right);
+                }
+            }
+        }
+        return result;
     }
 }
 // @lc code=end
