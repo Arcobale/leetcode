@@ -27,20 +27,48 @@ class Node {
 class Solution {
     public List<Integer> postorder(Node root) {
         List<Integer> result = new ArrayList<>();
-        order(root, result);
-        return result;
-    }
-
-    private void order(Node root, List<Integer> result) {
+        // order(root, result);
         if (root == null) {
-            return;
+            return result;
         }
-        if (root.children != null) {
-            for (Node child : root.children) {
-                order(child, result);
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            Node node = stack.peek();
+            if (node != null) {
+                stack.pop();
+                stack.push(node);
+                stack.push(null);
+
+                if (node.children != null) {
+                    List<Node> children = node.children;
+                    int len = children.size();
+                    for (int i = len - 1; i >= 0; i--) {
+                        stack.push(children.get(i));
+                    }
+                }
+            } else {
+                stack.pop();
+                node = stack.pop();
+                result.add(node.val);
             }
         }
-        result.add(root.val);
+
+        return result;
     }
+    /*
+     * private void order(Node root, List<Integer> result) {
+     * if (root == null) {
+     * return;
+     * }
+     * if (root.children != null) {
+     * for (Node child : root.children) {
+     * order(child, result);
+     * }
+     * }
+     * result.add(root.val);
+     * }
+     */
 }
 // @lc code=end
