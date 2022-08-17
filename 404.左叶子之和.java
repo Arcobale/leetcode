@@ -1,3 +1,7 @@
+import java.util.Stack;
+
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=404 lang=java
  *
@@ -25,13 +29,31 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int leftValue = sumOfLeftLeaves(root.left); // 左
-        int rightValue = sumOfLeftLeaves(root.right); // 右
-        int midValue = 0;
-        if (root.left != null && root.left.left == null && root.left.right == null) {
-            midValue += root.left.val;
+        /*
+         * int leftValue = sumOfLeftLeaves(root.left); // 左
+         * int rightValue = sumOfLeftLeaves(root.right); // 右
+         * int midValue = 0;
+         * if (root.left != null && root.left.left == null && root.left.right == null) {
+         * midValue = root.left.val;
+         * }
+         * return leftValue + rightValue + midValue; // 中
+         */
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        int result = 0;
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            if (node.left != null && node.left.left == null && node.left.right == null) {
+                result += node.left.val;
+            }
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
         }
-        return leftValue + rightValue + midValue; // 中
+        return result;
     }
 }
 // @lc code=end
