@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -31,27 +32,52 @@ class Solution {
         if (root == null) {
             return result;
         }
-        Stack<Object> stack = new Stack<>();
-        stack.push(root);
-        stack.push(root.val + "");
+        /*
+         * Stack<Object> stack = new Stack<>();
+         * stack.push(root);
+         * stack.push(root.val + "");
+         * 
+         * while (!stack.isEmpty()) {
+         * String path = (String) stack.pop();
+         * TreeNode node = (TreeNode) stack.pop();
+         * if (node.left == null && node.right == null) {
+         * result.add(path);
+         * }
+         * if (node.right != null) {
+         * stack.push(node.right);
+         * stack.push(path + "->" + node.right.val);
+         * }
+         * if (node.left != null) {
+         * stack.push(node.left);
+         * stack.push(path + "->" + node.left.val);
+         * }
+         * }
+         */
+        List<Integer> path = new ArrayList<>();
+        searchPath(root, path, result);
+        return result;
+    }
 
-        while (!stack.isEmpty()) {
-            String path = (String) stack.pop();
-            TreeNode node = (TreeNode) stack.pop();
-            if (node.left == null && node.right == null) {
-                result.add(path);
+    private void searchPath(TreeNode node, List<Integer> path, List<String> result) {
+        path.add(node.val);
+        if (node.left == null && node.right == null) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < path.size() - 1; i++) {
+                sb.append(path.get(i)).append("->");
             }
-            if (node.right != null) {
-                stack.push(node.right);
-                stack.push(path + "->" + node.right.val);
-            }
-            if (node.left != null) {
-                stack.push(node.left);
-                stack.push(path + "->" + node.left.val);
-            }
+            sb.append(path.get(path.size() - 1));
+            result.add(sb.toString());
+            return;
         }
 
-        return result;
+        if (node.left != null) {
+            searchPath(node.left, path, result);
+            path.remove(path.size() - 1); // 回溯
+        }
+        if (node.right != null) {
+            searchPath(node.right, path, result);
+            path.remove(path.size() - 1); // 回溯
+        }
     }
 }
 // @lc code=end
