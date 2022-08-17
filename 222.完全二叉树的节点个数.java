@@ -26,27 +26,32 @@ import javax.swing.tree.TreeNode;
  * }
  */
 class Solution {
+    /**
+     * 针对完全二叉树的解法
+     *
+     * 满二叉树的结点数为：2^depth - 1
+     */
     public int countNodes(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        int result = 0;
-        Queue<TreeNode> que = new LinkedList<>();
-        que.offer(root);
-        while (!que.isEmpty()) {
-            int len = que.size();
-            result += len;
-            while (len-- > 0) {
-                TreeNode temp = que.poll();
-                if (temp.left != null) {
-                    que.offer(temp.left);
-                }
-                if (temp.right != null) {
-                    que.offer(temp.right);
-                }
-            }
+        int leftDepth = getDepth(root.left);
+        int rightDepth = getDepth(root.right);
+        if (leftDepth == rightDepth) { // 左子树是满二叉树
+            // 2^leftDepth其实是 （2^leftDepth - 1） + 1 ，左子树 + 根结点
+            return (1 << leftDepth) + countNodes(root.right);
+        } else { // 右子树是满二叉树
+            return (1 << rightDepth) + countNodes(root.left);
         }
-        return result;
+    }
+
+    private int getDepth(TreeNode node) {
+        int depth = 0;
+        while (node != null) {
+            node = node.left;
+            depth++;
+        }
+        return depth;
     }
 }
 // @lc code=end
