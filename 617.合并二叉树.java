@@ -1,3 +1,8 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=617 lang=java
  *
@@ -28,9 +33,34 @@ class Solution {
         if (root2 == null) {
             return root1;
         }
-        root1.val += root2.val;
-        root1.left = mergeTrees(root1.left, root2.left);
-        root1.right = mergeTrees(root1.right, root2.right);
+        /*
+         * root1.val += root2.val;
+         * root1.left = mergeTrees(root1.left, root2.left);
+         * root1.right = mergeTrees(root1.right, root2.right);
+         * return root1;
+         */
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root1);
+        que.offer(root2);
+        while (!que.isEmpty()) {
+            TreeNode node1 = que.poll();
+            TreeNode node2 = que.poll();
+            node1.val += node2.val;
+            if (node1.left != null && node2.left != null) {
+                que.offer(node1.left);
+                que.offer(node2.left);
+            }
+            if (node1.right != null && node2.right != null) {
+                que.offer(node1.right);
+                que.offer(node2.right);
+            }
+            if (node1.left == null && node2.left != null) {
+                node1.left = node2.left;
+            }
+            if (node1.right == null && node2.right != null) {
+                node1.right = node2.right;
+            }
+        }
         return root1;
     }
 }
