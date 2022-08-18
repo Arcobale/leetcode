@@ -21,7 +21,7 @@
  * }
  */
 class Solution {
-    public TreeNode max;
+    public TreeNode pre;
 
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
@@ -32,10 +32,10 @@ class Solution {
             return false;
         }
         // 中
-        if (max != null && max.val >= root.val) {
+        if (pre != null && pre.val >= root.val) {
             return false;
         }
-        max = root;
+        pre = root;
         // 右
         if (!isValidBST(root.right)) {
             return false;
