@@ -1,3 +1,5 @@
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=701 lang=java
  *
@@ -25,10 +27,28 @@ class Solution {
         if (root == null) {
             return new TreeNode(val);
         }
-        if (root.val > val) {
-            root.left = insertIntoBST(root.left, val);
-        } else if (root.val < val) {
-            root.right = insertIntoBST(root.right, val);
+        /*
+         * if (root.val > val) {
+         * root.left = insertIntoBST(root.left, val);
+         * } else if (root.val < val) {
+         * root.right = insertIntoBST(root.right, val);
+         * }
+         * return root;
+         */
+        TreeNode pre = root;
+        TreeNode cur = root;
+        while (cur != null) {
+            pre = cur;
+            if (cur.val > val) {
+                cur = cur.left;
+            } else if (cur.val < val) {
+                cur = cur.right;
+            }
+        }
+        if (pre.val > val) {
+            pre.left = new TreeNode(val);
+        } else if (pre.val < val) {
+            pre.right = new TreeNode(val);
         }
         return root;
     }
