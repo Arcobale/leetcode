@@ -18,6 +18,9 @@ var combinationSum3 = function(k, n) {
     return result;
 };
 function backtracking(k, n, sum, startIndex) {
+    if (sum > n) {
+        return;
+    }
     if (path.length == k && sum == n) {
         result.push([...path]);
         return;
@@ -25,11 +28,6 @@ function backtracking(k, n, sum, startIndex) {
     for (let i = startIndex; i <= 9 - (k - path.length) + 1; i++) {
         path.push(i);
         sum += i;
-        if (sum > n) {
-            path.pop();
-            sum -= i;
-            return;
-        }
         backtracking(k, n, sum, i + 1);
         path.pop();
         sum -= i;
