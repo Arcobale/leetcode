@@ -10,6 +10,7 @@
  * @return {number}
  */
 var wiggleMaxLength = function(nums) {
+/*     // 贪心
     if (nums.length <= 1) return nums.length;
     let result = 1;
     let pre = 0;
@@ -22,7 +23,21 @@ var wiggleMaxLength = function(nums) {
         }
     }
 
-    return result;
+    return result; */
+
+    // 动态规划
+    if (nums.length <= 1) return nums.length;
+    let down = 1;  // 第i个值作为峰谷时的最大摆动序列长度 (i-1为峰顶)
+    let up = 1;  // 第i个值作为峰顶时的最大摆动序列长度 (i-1为峰谷)
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] > nums[i - 1]) {
+            up = Math.max(down + 1, up);
+        }
+        if (nums[i] < nums[i - 1]) {
+            down = Math.max(up + 1, down);
+        }
+    }
+    return Math.max(down, up);
 };
 // @lc code=end
 
