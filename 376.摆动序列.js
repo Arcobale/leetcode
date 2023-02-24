@@ -10,6 +10,7 @@
  * @return {number}
  */
 var wiggleMaxLength = function(nums) {
+    if (nums.length <= 1) return nums.length;
     let result = 1;
     let pre = 0;
     let cur = 0;
