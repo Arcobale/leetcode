@@ -14,6 +14,7 @@ var uniquePathsWithObstacles = function(obstacleGrid) {
     let n = obstacleGrid[0].length;
     let dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
     
+    // 障碍物的后方均不可达
     for (let i = 0; i < m && obstacleGrid[i][0] == 0; i++) {
         dp[i][0] = 1;
     }
@@ -23,9 +24,7 @@ var uniquePathsWithObstacles = function(obstacleGrid) {
 
     for (let i = 1; i < m; i++) {
         for (let j = 1; j < n; j++) {
-            if (obstacleGrid[i][j]) {
-                dp[i][j] = 0;
-            } else {
+            if (!obstacleGrid[i][j]) {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
             }
         }
