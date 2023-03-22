@@ -13,6 +13,7 @@
 var change = function(amount, coins) {
     let dp = Array(amount + 1).fill(0);
     dp[0] = 1;
+    //如果求组合数就是外层for循环遍历物品，内层for遍历背包。
     for (let i = 0; i < coins.length; i++) {
         for (let j = coins[i]; j <= amount; j++) {
             dp[j] += dp[j - coins[i]];
